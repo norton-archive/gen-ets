@@ -1,0 +1,3 @@
+{application,gen_ets}.
+{packages,[]}.
+{modules,[gen_ets,gen_ets_impl_ets]}.
