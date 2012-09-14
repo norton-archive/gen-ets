@@ -23,17 +23,17 @@
 -ifndef(gen_ets).
 -define(gen_ets, true).
 
--record(tid, {version=1 :: pos_integer(),
-              owner :: pid(),
-              name :: term(),
-              named_table=false :: boolean(),
-              type=set :: set|ordered_set,
-              keypos=1 :: pos_integer(),
-              protection=protected :: public|protected|private,
-              compressed=false :: boolean(),
-              async=false :: boolean(),
-              mod :: module(),
-              impl :: term()
-             }).
+-record(gen_tid, {version=1 :: pos_integer(),
+                  owner :: pid(),
+                  name :: term(),
+                  named_table=false :: boolean(),
+                  type=set :: set|ordered_set,
+                  keypos=1 :: pos_integer(),
+                  protection=protected :: public|protected|private,
+                  compressed=false :: boolean(),
+                  async=false :: boolean(),
+                  mod :: module(),
+                  impl :: term()
+                 }).
 
 -endif. % -ifndef(gen_ets).

@@ -72,111 +72,111 @@
 %%% API
 %%%----------------------------------------------------------------------
 
-open(#tid{name=Name, type=Type, keypos=KeyPos, protection=Protection, compressed=Compressed}, Opts) ->
+open(#gen_tid{name=Name, type=Type, keypos=KeyPos, protection=Protection, compressed=Compressed}, Opts) ->
     EffOpts =
         [Type, {keypos,KeyPos}, Protection] ++
         [compressed || Compressed ] ++
         proplists:delete(named_table, Opts),
     ets:new(Name, EffOpts).
 
-destroy(#tid{}, _Opts) ->
+destroy(#gen_tid{}, _Opts) ->
     true.
 
-repair(#tid{}, _Opts) ->
+repair(#gen_tid{}, _Opts) ->
     true.
 
-delete(#tid{impl=Impl}) ->
+delete(#gen_tid{impl=Impl}) ->
     ets:delete(Impl).
 
-delete(#tid{impl=Impl}, Key) ->
+delete(#gen_tid{impl=Impl}, Key) ->
     ets:delete(Impl, Key).
 
-delete_all_objects(#tid{impl=Impl}) ->
+delete_all_objects(#gen_tid{impl=Impl}) ->
     ets:delete_all_objects(Impl).
 
-first(#tid{impl=Impl}) ->
+first(#gen_tid{impl=Impl}) ->
     ets:first(Impl).
 
-foldl(Function, Acc0, #tid{impl=Impl}) ->
+foldl(Function, Acc0, #gen_tid{impl=Impl}) ->
     ets:foldl(Function, Acc0, Impl).
 
-foldr(Function, Acc0, #tid{impl=Impl}) ->
+foldr(Function, Acc0, #gen_tid{impl=Impl}) ->
     ets:foldr(Function, Acc0, Impl).
 
-info_memory(#tid{impl=Impl}) ->
+info_memory(#gen_tid{impl=Impl}) ->
     ets:info(Impl, memory).
 
-info_size(#tid{impl=Impl}) ->
+info_size(#gen_tid{impl=Impl}) ->
     ets:info(Impl, size).
 
-insert(#tid{impl=Impl}, ObjOrObjs) ->
+insert(#gen_tid{impl=Impl}, ObjOrObjs) ->
     ets:insert(Impl, ObjOrObjs).
 
-insert_new(#tid{impl=Impl}, ObjOrObjs) ->
+insert_new(#gen_tid{impl=Impl}, ObjOrObjs) ->
     ets:insert_new(Impl, ObjOrObjs).
 
-last(#tid{impl=Impl}) ->
+last(#gen_tid{impl=Impl}) ->
     ets:last(Impl).
 
-lookup(#tid{impl=Impl}, Key) ->
+lookup(#gen_tid{impl=Impl}, Key) ->
     ets:lookup(Impl, Key).
 
-lookup_element(#tid{impl=Impl}, Key, Pos) ->
+lookup_element(#gen_tid{impl=Impl}, Key, Pos) ->
     ets:lookup_element(Impl, Key, Pos).
 
-match(#tid{impl=Impl}, Pattern) ->
+match(#gen_tid{impl=Impl}, Pattern) ->
     ets:match(Impl, Pattern).
 
-match(#tid{impl=Impl}, Pattern, Limit) ->
+match(#gen_tid{impl=Impl}, Pattern, Limit) ->
     ets:match(Impl, Pattern, Limit).
 
 match(Cont) ->
     ets:match(Cont).
 
-match_delete(#tid{impl=Impl}, Pattern) ->
+match_delete(#gen_tid{impl=Impl}, Pattern) ->
     ets:match_delete(Impl, Pattern).
 
-match_object(#tid{impl=Impl}, Pattern) ->
+match_object(#gen_tid{impl=Impl}, Pattern) ->
     ets:match_object(Impl, Pattern).
 
-match_object(#tid{impl=Impl}, Pattern, Limit) ->
+match_object(#gen_tid{impl=Impl}, Pattern, Limit) ->
     ets:match_object(Impl, Pattern, Limit).
 
 match_object(Cont) ->
     ets:match_object(Cont).
 
-member(#tid{impl=Impl}, Key) ->
+member(#gen_tid{impl=Impl}, Key) ->
     ets:member(Impl, Key).
 
-next(#tid{impl=Impl}, Key) ->
+next(#gen_tid{impl=Impl}, Key) ->
     ets:next(Impl, Key).
 
-prev(#tid{impl=Impl}, Key) ->
+prev(#gen_tid{impl=Impl}, Key) ->
     ets:prev(Impl, Key).
 
-select(#tid{impl=Impl}, Spec) ->
+select(#gen_tid{impl=Impl}, Spec) ->
     ets:select(Impl, Spec).
 
-select(#tid{impl=Impl}, Spec, Limit) ->
+select(#gen_tid{impl=Impl}, Spec, Limit) ->
     ets:select(Impl, Spec, Limit).
 
 select(Cont) ->
     ets:select(Cont).
 
-select_count(#tid{impl=Impl}, Spec) ->
+select_count(#gen_tid{impl=Impl}, Spec) ->
     ets:select_count(Impl, Spec).
 
-select_delete(#tid{impl=Impl}, Spec) ->
+select_delete(#gen_tid{impl=Impl}, Spec) ->
     ets:select_delete(Impl, Spec).
 
-select_reverse(#tid{impl=Impl}, Spec) ->
+select_reverse(#gen_tid{impl=Impl}, Spec) ->
     ets:select_reverse(Impl, Spec).
 
-select_reverse(#tid{impl=Impl}, Spec, Limit) ->
+select_reverse(#gen_tid{impl=Impl}, Spec, Limit) ->
     ets:select_reverse(Impl, Spec, Limit).
 
 select_reverse(Cont) ->
     ets:select_reverse(Cont).
 
-tab2list(#tid{impl=Impl}) ->
+tab2list(#gen_tid{impl=Impl}) ->
     ets:tab2list(Impl).
