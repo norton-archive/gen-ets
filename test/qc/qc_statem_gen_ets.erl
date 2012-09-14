@@ -75,11 +75,11 @@
 
 -record(state, {
           parallel=false :: boolean(),
-          type=undefined :: undefined | ets_type(),
-          impl=undefined :: undefined | ets_impl(),
+          type           :: ets_type(),
+          impl           :: ets_impl(),
           exists=false   :: boolean(),
           options=[]     :: proplists:proplist(),
-          tab=undefined  :: undefined | tuple(),
+          tab            :: tuple(),
           objs=[]        :: [obj()]
          }).
 
@@ -130,7 +130,8 @@ serial_command_gen(#state{tab=undefined}=S) ->
          );
 serial_command_gen(#state{tab=Tab, impl=Impl}=S) ->
     %% @TODO info/1, info/2
-    oneof([{call,?IMPL,insert,[Tab,oneof([gen_obj(S),gen_objs(S)])]}]
+    oneof([{call,?IMPL,all,[Tab]}]
+          ++ [{call,?IMPL,insert,[Tab,oneof([gen_obj(S),gen_objs(S)])]}]
           ++ [{call,?IMPL,insert_new,[Tab,oneof([gen_obj(S),gen_objs(S)])]} || Impl =:= ets]
           ++ [{call,?IMPL,delete,[Tab]}]
           ++ [{call,?IMPL,delete,[Tab,gen_key(S)]}]
@@ -161,7 +162,8 @@ serial_command_gen(#state{tab=Tab, impl=Impl}=S) ->
 parallel_command_gen(#state{tab=undefined, type=undefined, impl=undefined}=S) ->
     {call,?IMPL,new,[?TAB,gen_options(new,S)]};
 parallel_command_gen(#state{tab=Tab, type=Type}=S) ->
-    oneof([{call,?IMPL,insert,[Tab,oneof([gen_obj(S),gen_objs(S)])]}]
+    oneof([{call,?IMPL,all,[Tab]}]
+          ++ [{call,?IMPL,insert,[Tab,oneof([gen_obj(S),gen_objs(S)])]}]
           ++ [{call,?IMPL,insert_new,[Tab,oneof([gen_obj(S),gen_objs(S)])]} || Type =:= ets]
           ++ [{call,?IMPL,delete,[Tab,gen_key(S)]}]
           ++ [{call,?IMPL,delete_all_objects,[Tab]}]
@@ -252,12 +254,22 @@ precondition(_S, {call,_,_,_}) ->
     true.
 
 -spec postcondition(#state{}, tuple(), term()) -> boolean().
-postcondition(#state{tab=undefined}, {call,_,new,[?TAB,Options]}, Res) ->
-    NamedTable = proplists:get_bool(named_table, Options),
-    if NamedTable ->
-            Res =:= ?TAB;
+postcondition(#state{tab=Tab}, {call,_,all,[_Tab]}, Res) ->
+    if is_pid(Tab) ->
+            true;
        true ->
-            ?IMPL:is_table(Res)
+            Res =:= [Tab]
+    end;
+postcondition(#state{tab=undefined}, {call,_,new,[?TAB,Options]}, Res) ->
+    if is_pid(Res) ->
+            true;
+       true ->
+            NamedTable = proplists:get_bool(named_table, Options),
+            if NamedTable ->
+                    Res =:= ?TAB;
+               true ->
+                    ?IMPL:is_table(Res)
+            end
     end;
 postcondition(_S, {call,_,new,[?TAB,_Options]}, Res) ->
     case Res of
@@ -267,11 +279,15 @@ postcondition(_S, {call,_,new,[?TAB,_Options]}, Res) ->
             false
     end;
 postcondition(#state{tab=undefined}, {call,_,new,[_Tab,?TAB,Options]}, Res) ->
-    NamedTable = proplists:get_bool(named_table, Options),
-    if NamedTable ->
-            Res =:= ?TAB;
+    if is_pid(Res) ->
+            true;
        true ->
-            ?IMPL:is_table(Res)
+            NamedTable = proplists:get_bool(named_table, Options),
+            if NamedTable ->
+                    Res =:= ?TAB;
+               true ->
+                    ?IMPL:is_table(Res)
+            end
     end;
 postcondition(_S, {call,_,destroy,[_Tab,?TAB,_Options]}, Res) ->
     Res =:= true;

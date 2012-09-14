@@ -29,6 +29,7 @@
          teardown/1
          , is_table/1
          %% gen_ets
+         , all/1
          , new/2
          , new/3
          , destroy/3
@@ -80,7 +81,10 @@ teardown(Name) ->
     os:cmd("rm -rf " ++ ?MODULE_STRING).
 
 is_table(Res) ->
-    is_record(Res, tid).
+    is_record(Res, gen_tid).
+
+all(_Tab) ->
+    catch gen_ets:all().
 
 new(Name, Options) ->
     ok = filelib:ensure_dir(?MODULE_STRING),
