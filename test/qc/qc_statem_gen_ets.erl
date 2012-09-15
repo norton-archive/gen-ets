@@ -42,7 +42,7 @@
 -compile(export_all).
 
 %% Implementation
--export([match31/3, match_object31/3, select31/3, select_reverse31/3]).
+-export([fold_helper/2, match31/3, match_object31/3, select31/3, select_reverse31/3]).
 
 %% @NOTE For boilerplate exports, see "qc_statem.hrl"
 -include_lib("qc/include/qc_statem.hrl").
@@ -143,8 +143,8 @@ serial_command_gen(#state{tab=Tab, impl=Impl}=S) ->
           ++ [{call,?IMPL,last,[Tab]}]
           ++ [{call,?IMPL,next,[Tab,gen_key(S)]}]
           ++ [{call,?IMPL,prev,[Tab,gen_key(S)]}]
-          ++ [{call,?IMPL,foldl,[fun(X, Acc) -> [X|Acc] end, [], Tab]}]
-          ++ [{call,?IMPL,foldr,[fun(X, Acc) -> [X|Acc] end, [], Tab]}]
+          ++ [{call,?IMPL,foldl,[fun ?MODULE:fold_helper/2, [], Tab]}]
+          ++ [{call,?IMPL,foldr,[fun ?MODULE:fold_helper/2, [], Tab]}]
           ++ [{call,?IMPL,tab2list,[Tab]}]
           ++ [{call,?IMPL,match,[Tab, gen_pattern(S)]}]
           ++ [{call,?MODULE,match31,[Tab, gen_pattern(S), gen_pos_integer()]}]
@@ -175,6 +175,9 @@ parallel_command_gen(#state{tab=Tab, type=Type}=S) ->
           ++ [{call,?IMPL,next,[Tab,gen_key(S)]}]
           ++ [{call,?IMPL,prev,[Tab,gen_key(S)]}]
          ).
+
+fold_helper(X, Acc) ->
+    [X|Acc].
 
 -spec initial_state(term()) -> #state{}.
 initial_state(_Scenario) ->
@@ -427,7 +430,6 @@ setup(_Scenario) ->
 
 -spec teardown(term(), #state{}) -> ok.
 teardown(_Ref, _State) ->
-    ?IMPL:teardown(?TAB),
     ok.
 
 -spec aggregate([{integer(), term(), term(), #state{}}])

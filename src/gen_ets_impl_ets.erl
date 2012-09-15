@@ -32,34 +32,20 @@
          , delete/2
          , delete_all_objects/1
          , first/1
-         , foldl/3
-         , foldr/3
+         , first_iter/1
          , info_memory/1
          , info_size/1
          , insert/2
          , insert_new/2
          , last/1
+         , last_iter/1
          , lookup/2
          , lookup_element/3
-         , match/2
-         , match/3
-         , match/1
-         , match_delete/2
-         , match_object/2
-         , match_object/3
-         , match_object/1
          , member/2
          , next/2
+         , next_iter/2
          , prev/2
-         , select/2
-         , select/3
-         , select/1
-         , select_count/2
-         , select_delete/2
-         , select_reverse/2
-         , select_reverse/3
-         , select_reverse/1
-         , tab2list/1
+         , prev_iter/2
         ]).
 
 
@@ -74,9 +60,9 @@
 
 open(#gen_tid{name=Name, type=Type, keypos=KeyPos, protection=Protection, compressed=Compressed}, Opts) ->
     EffOpts =
-        [Type, {keypos,KeyPos}, Protection] ++
-        [compressed || Compressed ] ++
-        proplists:delete(named_table, Opts),
+        [Type, {keypos,KeyPos}, public] ++
+        [ compressed || Compressed ] ++
+        proplists:delete(Protection, proplists:delete(named_table, Opts)),
     ets:new(Name, EffOpts).
 
 destroy(#gen_tid{}, _Opts) ->
@@ -97,11 +83,13 @@ delete_all_objects(#gen_tid{impl=Impl}) ->
 first(#gen_tid{impl=Impl}) ->
     ets:first(Impl).
 
-foldl(Function, Acc0, #gen_tid{impl=Impl}) ->
-    ets:foldl(Function, Acc0, Impl).
-
-foldr(Function, Acc0, #gen_tid{impl=Impl}) ->
-    ets:foldr(Function, Acc0, Impl).
+first_iter(#gen_tid{impl=Impl}) ->
+    case ets:first(Impl) of
+        '$end_of_table' ->
+            '$end_of_table';
+        Key ->
+            safe_lookup(Impl, Key)
+    end.
 
 info_memory(#gen_tid{impl=Impl}) ->
     ets:info(Impl, memory).
@@ -118,32 +106,19 @@ insert_new(#gen_tid{impl=Impl}, ObjOrObjs) ->
 last(#gen_tid{impl=Impl}) ->
     ets:last(Impl).
 
+last_iter(#gen_tid{impl=Impl}) ->
+    case ets:last(Impl) of
+        '$end_of_table' ->
+            '$end_of_table';
+        Key ->
+            safe_lookup(Impl, Key)
+    end.
+
 lookup(#gen_tid{impl=Impl}, Key) ->
     ets:lookup(Impl, Key).
 
 lookup_element(#gen_tid{impl=Impl}, Key, Pos) ->
     ets:lookup_element(Impl, Key, Pos).
-
-match(#gen_tid{impl=Impl}, Pattern) ->
-    ets:match(Impl, Pattern).
-
-match(#gen_tid{impl=Impl}, Pattern, Limit) ->
-    ets:match(Impl, Pattern, Limit).
-
-match(Cont) ->
-    ets:match(Cont).
-
-match_delete(#gen_tid{impl=Impl}, Pattern) ->
-    ets:match_delete(Impl, Pattern).
-
-match_object(#gen_tid{impl=Impl}, Pattern) ->
-    ets:match_object(Impl, Pattern).
-
-match_object(#gen_tid{impl=Impl}, Pattern, Limit) ->
-    ets:match_object(Impl, Pattern, Limit).
-
-match_object(Cont) ->
-    ets:match_object(Cont).
 
 member(#gen_tid{impl=Impl}, Key) ->
     ets:member(Impl, Key).
@@ -151,32 +126,49 @@ member(#gen_tid{impl=Impl}, Key) ->
 next(#gen_tid{impl=Impl}, Key) ->
     ets:next(Impl, Key).
 
+next_iter(#gen_tid{impl=Impl}, Key) ->
+    case safe_next(Impl, Key) of
+        '$end_of_table' ->
+            '$end_of_table';
+        NextKey ->
+            safe_lookup(Impl, NextKey)
+    end.
+
 prev(#gen_tid{impl=Impl}, Key) ->
     ets:prev(Impl, Key).
 
-select(#gen_tid{impl=Impl}, Spec) ->
-    ets:select(Impl, Spec).
+prev_iter(#gen_tid{impl=Impl}, Key) ->
+    case safe_prev(Impl, Key) of
+        '$end_of_table' ->
+            '$end_of_table';
+        PrevKey ->
+            safe_lookup(Impl, PrevKey)
+    end.
 
-select(#gen_tid{impl=Impl}, Spec, Limit) ->
-    ets:select(Impl, Spec, Limit).
+%%%----------------------------------------------------------------------
+%%% Internal functions
+%%%----------------------------------------------------------------------
 
-select(Cont) ->
-    ets:select(Cont).
+safe_next(Impl, Key) ->
+    try
+        ets:next(Impl, Key)
+    catch
+        error:badarg ->
+            '$end_of_table'
+    end.
 
-select_count(#gen_tid{impl=Impl}, Spec) ->
-    ets:select_count(Impl, Spec).
+safe_prev(Impl, Key) ->
+    try
+        ets:prev(Impl, Key)
+    catch
+        error:badarg ->
+            '$end_of_table'
+    end.
 
-select_delete(#gen_tid{impl=Impl}, Spec) ->
-    ets:select_delete(Impl, Spec).
-
-select_reverse(#gen_tid{impl=Impl}, Spec) ->
-    ets:select_reverse(Impl, Spec).
-
-select_reverse(#gen_tid{impl=Impl}, Spec, Limit) ->
-    ets:select_reverse(Impl, Spec, Limit).
-
-select_reverse(Cont) ->
-    ets:select_reverse(Cont).
-
-tab2list(#gen_tid{impl=Impl}) ->
-    ets:tab2list(Impl).
+safe_lookup(Impl, Key) ->
+    case ets:lookup(Impl, Key) of
+        [] ->
+            '$end_of_table';
+        [Object] ->
+            Object
+    end.

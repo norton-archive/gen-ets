@@ -28,6 +28,6 @@
   {vsn, git},
   {registered, []},
   {applications, [kernel, stdlib, sasl]},
-  {modules, [gen_ets, gen_ets_impl_ets]}
+  {modules, [gen_ets, gen_ets_impl_ets, gen_ets_lib]}
  ]
 }.
