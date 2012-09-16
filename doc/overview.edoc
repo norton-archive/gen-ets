@@ -7,11 +7,6 @@
 GEN_ETS is an generic wrapper for Erlang Term Storage with a callback
 interface for a backend implementation.
 
-For testing purposes, GEN_ETS supports a default backend
-implementation:
-
-- +ets+ Erlang ETS backend
-
 GEN_ETS is not intended to be an exact clone of ETS.  The currently
 supported ETS APIs are:
 
@@ -49,6 +44,21 @@ supported ETS APIs are:
 - +select_reverse/2+
 - +select_reverse/3+
 - +tab2list/1+
+
+In particular, GEN_ETS differs from ETS in the following ways:
+
+- The name of a table can be any Erlang term.
+
+- All APIs require a namespace.  A namespace must be a unique,
+  reserved atom.  Due to limitiations of the current implementation of
+  GEN_ETS, this reserved atom is used to register a local named
+  process and to create a named ets table.
++
+CAUTION: Choose your application's namespace(s) wisely.
+
+For convience and testing purposes, GEN_ETS provides a default
+namespace wrapper and backend implementation based on ETS. See
++gen_ets+ and +gen_ets_impl_ets+ for further details.
 
 _This repository is experimental in nature - use at your own risk and
 please contribute if you find GEN_ETS useful._

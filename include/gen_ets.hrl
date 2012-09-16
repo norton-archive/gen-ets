@@ -32,6 +32,7 @@
                   protection=protected :: public|protected|private,
                   compressed=false :: boolean(),
                   async=false :: boolean(),
+                  ns :: atom(),
                   mod :: module(),
                   impl :: term()
                  }).

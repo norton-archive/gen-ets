@@ -21,7 +21,7 @@
 %%% THE SOFTWARE.
 
 -module(gen_ets_impl_ets).
--behaviour(gen_ets).
+-behaviour(gen_ets_ns).
 
 -include("gen_ets.hrl").
 
