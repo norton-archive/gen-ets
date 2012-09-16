@@ -75,10 +75,10 @@
 
 teardown(Name) ->
     %% @TODO make this more robust
-    [ gen_ets:delete(Tab) || Tab <- gen_ets:all() ],
+    _ = [ true=gen_ets:delete(Tab) || Tab <- gen_ets:all() ],
     catch exit(whereis(Name), kill),
-    os:cmd("find . -name '" ++ ?MODULE_STRING ++ ".*' -exec rm -rf {} \;"),
-    os:cmd("rm -rf " ++ ?MODULE_STRING).
+    _ = os:cmd("find . -name '" ++ ?MODULE_STRING ++ ".*' -exec rm -rf {} \;"),
+    _ = os:cmd("rm -rf " ++ ?MODULE_STRING).
 
 is_table(Res) ->
     is_record(Res, gen_tid).

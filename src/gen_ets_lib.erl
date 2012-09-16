@@ -73,7 +73,7 @@ reg_setup() ->
             Caller = self(),
             Fun = fun() ->
                           register(?MODULE, self()),
-                          ets:new(?TAB, [ordered_set, public, named_table, {keypos, #gen_reg.name}, {read_concurrency, true}]),
+                          ?TAB = ets:new(?TAB, [ordered_set, public, named_table, {keypos, #gen_reg.name}, {read_concurrency, true}]),
                           Caller ! self(),
                           receive
                               {Pid, stop} ->

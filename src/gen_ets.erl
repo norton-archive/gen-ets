@@ -70,27 +70,27 @@
 %% Interface Functions
 -ifndef(old_callbacks).
 
--callback open(gen_tid(), impl_opts()) -> impl().
--callback destroy(gen_tid(), impl_opts()) -> true.
--callback repair(gen_tid(), impl_opts()) -> true.
--callback delete(gen_tid()) -> true.
--callback delete(gen_tid(), key()) -> true.
--callback delete_all_objects(gen_tid()) -> true.
--callback first(gen_tid()) -> key() | '$end_of_table'.
--callback first_iter(gen_tid()) -> object() | '$end_of_table'.
--callback info_memory(gen_tid()) -> non_neg_integer().
--callback info_size(gen_tid()) -> non_neg_integer().
--callback insert(gen_tid(), object() | [object()]) -> true.
--callback insert_new(gen_tid(), object() | [object()]) -> true.
--callback last(gen_tid()) -> key() | '$end_of_table'.
--callback last_iter(gen_tid()) -> object() | '$end_of_table'.
--callback lookup(gen_tid(), key()) -> [object()].
--callback lookup_element(gen_tid(), key(), pos()) -> term().
--callback member(gen_tid(), key()) -> true | false.
--callback next(gen_tid(), key()) -> key() | '$end_of_table'.
--callback next_iter(gen_tid(), key()) -> object() | '$end_of_table'.
--callback prev(gen_tid(), key()) -> key() | '$end_of_table'.
--callback prev_iter(gen_tid(), key()) -> object() | '$end_of_table'.
+-callback open(#gen_tid{}, impl_opts()) -> impl().
+-callback destroy(#gen_tid{}, impl_opts()) -> true.
+-callback repair(#gen_tid{}, impl_opts()) -> true.
+-callback delete(#gen_tid{}) -> true.
+-callback delete(#gen_tid{}, key()) -> true.
+-callback delete_all_objects(#gen_tid{}) -> true.
+-callback first(#gen_tid{}) -> key() | '$end_of_table'.
+-callback first_iter(#gen_tid{}) -> object() | '$end_of_table'.
+-callback info_memory(#gen_tid{}) -> non_neg_integer().
+-callback info_size(#gen_tid{}) -> non_neg_integer().
+-callback insert(#gen_tid{}, object() | [object()]) -> true.
+-callback insert_new(#gen_tid{}, object() | [object()]) -> true.
+-callback last(#gen_tid{}) -> key() | '$end_of_table'.
+-callback last_iter(#gen_tid{}) -> object() | '$end_of_table'.
+-callback lookup(#gen_tid{}, key()) -> [object()].
+-callback lookup_element(#gen_tid{}, key(), pos()) -> term().
+-callback member(#gen_tid{}, key()) -> true | false.
+-callback next(#gen_tid{}, key()) -> key() | '$end_of_table'.
+-callback next_iter(#gen_tid{}, key()) -> object() | '$end_of_table'.
+-callback prev(#gen_tid{}, key()) -> key() | '$end_of_table'.
+-callback prev_iter(#gen_tid{}, key()) -> object() | '$end_of_table'.
 
 -else. % -ifndef(old_callbacks).
 

@@ -79,7 +79,7 @@
           impl           :: ets_impl(),
           exists=false   :: boolean(),
           options=[]     :: proplists:proplist(),
-          tab            :: tuple(),
+          tab            :: tuple() | pid(),
           objs=[]        :: [obj()]
          }).
 
@@ -161,10 +161,10 @@ serial_command_gen(#state{tab=Tab, impl=Impl}=S) ->
 
 parallel_command_gen(#state{tab=undefined, type=undefined, impl=undefined}=S) ->
     {call,?IMPL,new,[?TAB,gen_options(new,S)]};
-parallel_command_gen(#state{tab=Tab, type=Type}=S) ->
+parallel_command_gen(#state{tab=Tab, impl=Impl}=S) ->
     oneof([{call,?IMPL,all,[Tab]}]
           ++ [{call,?IMPL,insert,[Tab,oneof([gen_obj(S),gen_objs(S)])]}]
-          ++ [{call,?IMPL,insert_new,[Tab,oneof([gen_obj(S),gen_objs(S)])]} || Type =:= ets]
+          ++ [{call,?IMPL,insert_new,[Tab,oneof([gen_obj(S),gen_objs(S)])]} || Impl =:= ets]
           ++ [{call,?IMPL,delete,[Tab,gen_key(S)]}]
           ++ [{call,?IMPL,delete_all_objects,[Tab]}]
           ++ [{call,?IMPL,member,[Tab,gen_key(S)]}]
@@ -425,7 +425,7 @@ setup() ->
 
 -spec setup(term()) -> {ok, term()}.
 setup(_Scenario) ->
-    ?IMPL:teardown(?TAB),
+    _ = ?IMPL:teardown(?TAB),
     {ok, undefined}.
 
 -spec teardown(term(), #state{}) -> ok.
