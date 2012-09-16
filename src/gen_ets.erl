@@ -63,8 +63,7 @@
          , tab2list/1
         ]).
 
-%% DEBUG
--compile(export_all).
+%% DEBUG -compile(export_all).
 
 -export_type([gen_tab/0, gen_tid/0, name/0, match_pattern/0, match_spec/0]).
 
@@ -79,12 +78,8 @@
 -callback delete_all_objects(gen_tid()) -> true.
 -callback first(gen_tid()) -> key() | '$end_of_table'.
 -callback first_iter(gen_tid()) -> object() | '$end_of_table'.
--callback foldl(Fun, Acc0::term(), gen_tid()) -> Acc1::term() when
-      Fun :: fun((Element::term(), AccIn::term()) -> AccOut::term()).
--callback foldr(Fun, Acc0::term(), gen_tid()) -> Acc1::term() when
-      Fun :: fun((Element::term(), AccIn::term()) -> AccOut::term()).
--callback info(gen_tid()) -> [{item(), term()}].
--callback info(gen_tid(), item()) -> term().
+-callback info_memory(gen_tid()) -> non_neg_integer().
+-callback info_size(gen_tid()) -> non_neg_integer().
 -callback insert(gen_tid(), object() | [object()]) -> true.
 -callback insert_new(gen_tid(), object() | [object()]) -> true.
 -callback last(gen_tid()) -> key() | '$end_of_table'.
@@ -111,10 +106,8 @@ behaviour_info(callbacks) ->
      , {delete_all_objects,1}
      , {first,1}
      , {first_iter,1}
-     , {foldl,3}
-     , {foldr,3}
-     , {info,1}
-     , {info,2}
+     , {info_memory,1}
+     , {info_size,1}
      , {insert,2}
      , {insert_new,2}
      , {last,1}
@@ -675,8 +668,6 @@ prev(Tab, Key) ->
         #gen_tid{mod=Mod}=Tid ->
             Mod:prev(Tid, Key)
     end.
-
-%% repair_continuation/2
 
 %% @doc Matches the objects in the table +Tab+ against the spec
 %% +Spec+.
