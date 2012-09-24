@@ -26,6 +26,7 @@
 
 %% External exports
 -export([all/1
+         , tid/2
          , new/3
          , destroy/3
          , repair/3
@@ -232,6 +233,18 @@ behaviour_info(_Other) ->
 -spec all(gen_ns()) -> [gen_tab()].
 all(NS) ->
     gen_ets_reg:list(NS).
+
+%% @doc Returns a table's identifier.
+%% @end
+
+-spec tid(gen_ns(), gen_tab()) -> gen_tid().
+tid(NS, Tab) ->
+    case check_access(NS, Tab) of
+        undefined ->
+            erlang:error(badarg, [NS, Tab]);
+        Tid ->
+            Tid
+    end.
 
 %% @doc Creates a new table and returns a table identifier which can
 %% be used in subsequent operations.  The table identifier can be sent
