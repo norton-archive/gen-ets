@@ -89,7 +89,7 @@ $ ./rebar get-deps
 $ ./rebar clean
 $ ./rebar compile -D QC -D QC_EQC
 $ ./rebar test-compile -D QC -D QC_EQC
-$ (cd .test; erl -smp +A 5 -pz ../../qc/ebin)
+$ (cd .eunit; erl -smp +A 5 -pz ../../qc/ebin)
 
 1> qc_statem_gen_ets:qc_run(500, []).
   :
@@ -242,7 +242,7 @@ $ make dialyze
 +
 CAUTION: If you manually run dialyzer with the "-r" option, execute
 "make clean compile" first to avoid finding duplicate beam files
-underneath rebar\'s .test directory.  Check Makefile for further
+underneath rebar\'s .eunit directory.  Check Makefile for further
 information.
 
    3. Dialyze without specs
@@ -273,7 +273,7 @@ $ make eqc-compile
 3. Run 5,000 QuickCheck tests
 +
 ------
-$ cd working-directory-name/deps/gen_ets/.test
+$ cd working-directory-name/deps/gen_ets/.eunit
 $ erl -smp +A 5 -pz -pz ../../qc/ebin
 
 1> qc_statem_gen_ets:qc_run(5000).
@@ -339,7 +339,7 @@ $ make proper-compile
 3. Run 5,000 PropEr tests
 +
 ------
-$ cd working-directory-name/deps/gen_ets/.test
+$ cd working-directory-name/deps/gen_ets/.eunit
 $ erl -smp +A 5 -pz -pz ../../qc/ebin
 
 1> qc_statem_gen_ets:qc_run(5000).
