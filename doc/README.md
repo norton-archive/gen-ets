@@ -7,189 +7,207 @@ Copyright (c) 2011-2012 by Joseph Wayne Norton
 
 __Authors:__ Joseph Wayne Norton ([`norton@alum.mit.edu`](mailto:norton@alum.mit.edu)).<p>GEN_ETS is an generic wrapper for Erlang Term Storage with a callback
 interface for a backend implementation.</p>
-<p>For testing purposes, GEN_ETS supports a default backend
-implementation:</p>
-<ul>
-<li>
-<p>
-<tt>ets</tt> Erlang ETS backend
-</p>
-</li>
-</ul>
 <p>GEN_ETS is not intended to be an exact clone of ETS.  The currently
 supported ETS APIs are:</p>
 <ul>
 <li>
 <p>
-<tt>all/0</tt>
+<code>all/0</code>
 </p>
 </li>
 <li>
 <p>
-<tt>delete/1</tt>
+<code>delete/1</code>
 </p>
 </li>
 <li>
 <p>
-<tt>delete/2</tt>
+<code>delete/2</code>
 </p>
 </li>
 <li>
 <p>
-<tt>delete_all_objects/1</tt>
+<code>delete_all_objects/1</code>
 </p>
 </li>
 <li>
 <p>
-<tt>first/1</tt>
+<code>first/1</code>
 </p>
 </li>
 <li>
 <p>
-<tt>foldl/3</tt>
+<code>foldl/3</code>
 </p>
 </li>
 <li>
 <p>
-<tt>foldr/3</tt>
+<code>foldr/3</code>
 </p>
 </li>
 <li>
 <p>
-<tt>info/1</tt> <em>only a subset of items</em>
+<code>info/1</code> <em>only a subset of items</em>
 </p>
 </li>
 <li>
 <p>
-<tt>info/2</tt> <em>only a subset of items</em>
+<code>info/2</code> <em>only a subset of items</em>
 </p>
 </li>
 <li>
 <p>
-<tt>insert/2</tt>
+<code>insert/2</code>
 </p>
 </li>
 <li>
 <p>
-<tt>insert_new/2</tt>
+<code>insert_new/2</code>
 </p>
 </li>
 <li>
 <p>
-<tt>last/1</tt>
+<code>last/1</code>
 </p>
 </li>
 <li>
 <p>
-<tt>lookup/2</tt>
+<code>lookup/2</code>
 </p>
 </li>
 <li>
 <p>
-<tt>lookup_element/3</tt>
+<code>lookup_element/3</code>
 </p>
 </li>
 <li>
 <p>
-<tt>match/1</tt>
+<code>match/1</code>
 </p>
 </li>
 <li>
 <p>
-<tt>match/2</tt>
+<code>match/2</code>
 </p>
 </li>
 <li>
 <p>
-<tt>match/3</tt>
+<code>match/3</code>
 </p>
 </li>
 <li>
 <p>
-<tt>match_delete/2</tt>
+<code>match_delete/2</code>
 </p>
 </li>
 <li>
 <p>
-<tt>match_object/1</tt>
+<code>match_object/1</code>
 </p>
 </li>
 <li>
 <p>
-<tt>match_object/2</tt>
+<code>match_object/2</code>
 </p>
 </li>
 <li>
 <p>
-<tt>match_object/3</tt>
+<code>match_object/3</code>
 </p>
 </li>
 <li>
 <p>
-<tt>member/2</tt>
+<code>member/2</code>
 </p>
 </li>
 <li>
 <p>
-<tt>new/2</tt>
+<code>new/2</code>
 </p>
 </li>
 <li>
 <p>
-<tt>next/2</tt>
+<code>next/2</code>
 </p>
 </li>
 <li>
 <p>
-<tt>prev/2</tt>
+<code>prev/2</code>
 </p>
 </li>
 <li>
 <p>
-<tt>select/1</tt>
+<code>select/1</code>
 </p>
 </li>
 <li>
 <p>
-<tt>select/2</tt>
+<code>select/2</code>
 </p>
 </li>
 <li>
 <p>
-<tt>select/3</tt>
+<code>select/3</code>
 </p>
 </li>
 <li>
 <p>
-<tt>select_count/2</tt>
+<code>select_count/2</code>
 </p>
 </li>
 <li>
 <p>
-<tt>select_delete/2</tt>
+<code>select_delete/2</code>
 </p>
 </li>
 <li>
 <p>
-<tt>select_reverse/1</tt>
+<code>select_reverse/1</code>
 </p>
 </li>
 <li>
 <p>
-<tt>select_reverse/2</tt>
+<code>select_reverse/2</code>
 </p>
 </li>
 <li>
 <p>
-<tt>select_reverse/3</tt>
+<code>select_reverse/3</code>
 </p>
 </li>
 <li>
 <p>
-<tt>tab2list/1</tt>
+<code>tab2list/1</code>
 </p>
 </li>
 </ul>
+<p>In particular, GEN_ETS differs from ETS in the following ways:</p>
+<ul>
+<li>
+<p>
+The name of a table can be any Erlang term.
+</p>
+</li>
+<li>
+<p>
+All APIs require a namespace.  A namespace must be a unique,
+  reserved atom.  Due to limitiations of the current implementation of
+  GEN_ETS, this reserved atom is used to register a local named
+  process and to create a named ets table.
+</p>
+
+<table><tr>
+<td class="icon">
+Caution
+</td>
+<td class="content">Choose your application's namespace(s) wisely.</td>
+</tr></table>
+
+</li>
+</ul>
+<p>For convience and testing purposes, GEN_ETS provides a default
+namespace wrapper and backend implementation based on ETS. See
+<code>gen_ets</code> and <code>gen_ets_impl_ets</code> for further details.</p>
 <p><em>This repository is experimental in nature - use at your own risk and
 please contribute if you find GEN_ETS useful.</em></p>
 
@@ -199,26 +217,21 @@ please contribute if you find GEN_ETS useful.</em></p>
 this recipe:</p>
 
 
-<pre><tt>$ mkdir working-directory-name
+<pre><code>$ mkdir working-directory-name
 $ cd working-directory-name
 $ git clone https://github.com/norton/gen_ets.git gen_ets
 $ cd gen_ets
-$ ./rebar get-deps
-$ ./rebar clean
-$ ./rebar compile</tt></pre>
+$ make deps clean compile</code></pre>
 
-<p><em>OR</em> if QuickCheck is available then follow the this recipe:</p>
+<p><em>OR</em> if QuickCheck is available then follow this recipe:</p>
 
 
-<pre><tt>$ mkdir working-directory-name
+<pre><code>$ mkdir working-directory-name
 $ cd working-directory-name
 $ git clone https://github.com/norton/gen_ets.git gen_ets
 $ cd gen_ets
-$ ./rebar get-deps
-$ ./rebar clean
-$ ./rebar compile -D QC -D QC_EQC
-$ ./rebar test-compile -D QC -D QC_EQC
-$ (cd .eunit; erl -smp +A 5 -pz ../../qc/ebin)
+$ make deps clean eqc
+$ (cd .qc; erl -smp +A 5 -pz ../deps/qc/ebin)
 
 1> qc_statem_gen_ets:qc_run(500, []).
   :
@@ -256,7 +269,7 @@ OK, passed 500 tests
 1.57% {next,{error,badarg}}
 1.56% {prev,{error,badarg}}
 0.72% {lookup_element,ok}
-true</tt></pre>
+true</code></pre>
 
 <p>For an alternative recipe with other "features" albeit more complex,
 please read further.</p>
@@ -293,8 +306,8 @@ Configure your e-mail and name for Git
 </p>
 
 
-<pre><tt>$ git config \--global user.email "you@example.com"
-$ git config \--global user.name "Your Name"</tt></pre>
+<pre><code>$ git config \--global user.email "you@example.com"
+$ git config \--global user.name "Your Name"</code></pre>
 
 </li>
 <li>
@@ -303,9 +316,9 @@ Install Repo
 </p>
 
 
-<pre><tt>$ mkdir -p ~/bin
+<pre><code>$ mkdir -p ~/bin
 $ wget -O - https://dl-ssl.google.com/dl/googlesource/git-repo/repo > ~/bin/repo
-$ chmod a+x ~/bin/repo</tt></pre>
+$ chmod a+x ~/bin/repo</code></pre>
 
 </li>
 <li>
@@ -314,9 +327,9 @@ Create working directory
 </p>
 
 
-<pre><tt>$ mkdir working-directory-name
+<pre><code>$ mkdir working-directory-name
 $ cd working-directory-name
-$ repo init -u https://github.com/norton/manifests.git -m gen_ets-default.xml</tt></pre>
+$ repo init -u https://github.com/norton/manifests.git -m gen_ets-default.xml</code></pre>
 
 
 <table><tr>
@@ -345,12 +358,12 @@ Download Git repositories
 </p>
 
 
-<pre><tt>$ cd working-directory-name
-$ repo sync</tt></pre>
+<pre><code>$ cd working-directory-name
+$ repo sync</code></pre>
 
 </li>
 </ol>
-<p>For futher information and help for related tools, please refer to the
+<p>For further information and help for related tools, please refer to the
 following links:</p>
 <ul>
 <li>
@@ -360,7 +373,7 @@ Erlang - <a href="http://www.erlang.org/">http://www.erlang.org/</a>
 <ul>
 <li>
 <p>
-<strong>R14 or newer, R15B02 has been tested recently</strong>
+<strong>R15 or newer, R15B02 has been tested most recently</strong>
 </p>
 </li>
 </ul>
@@ -372,7 +385,7 @@ Git - <a href="http://git-scm.com/">http://git-scm.com/</a>
 <ul>
 <li>
 <p>
-<strong>Git 1.5.4 or newer, Git 1.7.12 has been tested recently</strong>
+<strong>Git 1.5.4 or newer, Git 1.8.0 has been tested most recently</strong>
 </p>
 </li>
 <li>
@@ -394,7 +407,7 @@ Python - <a href="http://www.python.org">http://www.python.org</a>
 <ul>
 <li>
 <p>
-<strong>Python 2.4 or newer, Python 2.7.2 has been tested recently
+<strong>Python 2.4 or newer, Python 2.7.2 has been tested most recently
     (CAUTION: Python 3.x might be too new)</strong>
 </p>
 </li>
@@ -407,12 +420,12 @@ Python - <a href="http://www.python.org">http://www.python.org</a>
 </li>
 <li>
 <p>
-Rebar - <a href="https://github.com/basho/rebar/wiki">https://github.com/basho/rebar/wiki</a>
+Rebar - <a href="https://github.com/rebar/rebar/wiki">https://github.com/rebar/rebar/wiki</a>
 </p>
 </li>
 <li>
 <p>
-Repo - <a href="http://source.android.com/source/git-repo.md">http://source.android.com/source/git-repo.html</a>
+Repo - <a href="http://source.android.com/source/git-repo.html">http://source.android.com/source/git-repo.html</a>
 </p>
 </li>
 </ul>
@@ -433,8 +446,8 @@ Build
 </p>
 
 
-<pre><tt>$ cd working-directory-name
-$ make compile</tt></pre>
+<pre><code>$ cd working-directory-name
+$ make compile</code></pre>
 
 </li>
 </ol>
@@ -455,8 +468,8 @@ Build Dialyzer's PLT <em>(required once)</em>
 </p>
 
 
-<pre><tt>$ cd working-directory-name
-$ make build-plt</tt></pre>
+<pre><code>$ cd working-directory-name
+$ make build-plt</code></pre>
 
 
 <table><tr>
@@ -474,8 +487,8 @@ Dialyze with specs
 </p>
 
 
-<pre><tt>$ cd working-directory-name
-$ make dialyze</tt></pre>
+<pre><code>$ cd working-directory-name
+$ make dialyze</code></pre>
 
 
 <table><tr>
@@ -495,8 +508,8 @@ Dialyze without specs
 </p>
 
 
-<pre><tt>$ cd working-directory-name
-$ make dialyze-nospec</tt></pre>
+<pre><code>$ cd working-directory-name
+$ make dialyze-nospec</code></pre>
 
 </li>
 </ol>
@@ -511,12 +524,12 @@ $ make dialyze-nospec</tt></pre>
 <li>
 <p>
 Make sure QuickCheck is in your Erlang code path.  One simple way
-   to accomplish this is by adding the code path to your <tt>~/.erlang</tt>
+   to accomplish this is by adding the code path to your <code>~/.erlang</code>
    resource file.
 </p>
 
 
-<pre><tt>true = code:add_pathz(os:getenv("HOME")++"/.erlang.d/deps/quviq/eqc-X.Y.Z/ebin").</tt></pre>
+<pre><code>true = code:add_pathz(os:getenv("HOME")++"/.erlang.d/deps/quviq/eqc-X.Y.Z/ebin").</code></pre>
 
 </li>
 <li>
@@ -525,9 +538,9 @@ Compile for QuickCheck
 </p>
 
 
-<pre><tt>$ cd working-directory-name
+<pre><code>$ cd working-directory-name
 $ make clean
-$ make eqc-compile</tt></pre>
+$ make compile-for-eqc</code></pre>
 
 </li>
 <li>
@@ -536,7 +549,7 @@ Run 5,000 QuickCheck tests
 </p>
 
 
-<pre><tt>$ cd working-directory-name/deps/gen_ets/.eunit
+<pre><code>$ cd working-directory-name/deps/gen_ets/.qc
 $ erl -smp +A 5 -pz -pz ../../qc/ebin
 
 1> qc_statem_gen_ets:qc_run(5000).
@@ -575,14 +588,14 @@ OK, passed 5000 tests
 1.56% {prev,{error,badarg}}
 0.72% {lookup_element,ok}
 true
-.......</tt></pre>
+.......</code></pre>
 
 
 <table><tr>
 <td class="icon">
 Tip
 </td>
-<td class="content">For testing LevelDB directly using the C bindings, try<tt>qc_statemc_gen_ets:qc_run(5000)</tt>.</td>
+<td class="content">For testing LevelDB directly using the C bindings, try<code>qc_statemc_gen_ets:qc_run(5000)</code>.</td>
 </tr></table>
 
 </li>
@@ -596,12 +609,12 @@ Tip
 <li>
 <p>
 Make sure PropEr is in your Erlang code path.  One simple way to
-   accomplish this is by adding the code path to your <tt>~/.erlang</tt>
+   accomplish this is by adding the code path to your <code>~/.erlang</code>
    resource file.
 </p>
 
 
-<pre><tt>true = code:add_pathz(os:getenv("HOME")++"/.erlang.d/deps/proper/ebin").</tt></pre>
+<pre><code>true = code:add_pathz(os:getenv("HOME")++"/.erlang.d/deps/proper/ebin").</code></pre>
 
 </li>
 <li>
@@ -610,9 +623,9 @@ Compile for PropEr
 </p>
 
 
-<pre><tt>$ cd working-directory-name
+<pre><code>$ cd working-directory-name
 $ make clean
-$ make proper-compile</tt></pre>
+$ make compile-for-proper</code></pre>
 
 </li>
 <li>
@@ -621,7 +634,7 @@ Run 5,000 PropEr tests
 </p>
 
 
-<pre><tt>$ cd working-directory-name/deps/gen_ets/.eunit
+<pre><code>$ cd working-directory-name/deps/gen_ets/.qc
 $ erl -smp +A 5 -pz -pz ../../qc/ebin
 
 1> qc_statem_gen_ets:qc_run(5000).
@@ -654,7 +667,7 @@ OK: Passed 5000 test(s).
 0% {lookup_element,ok}
 0% {next,{error,badarg}}
 true
-.......</tt></pre>
+.......</code></pre>
 
 </li>
 </ol>
@@ -663,7 +676,7 @@ true
 
 <h2 id="_roadmap">Roadmap</h2>
 
-<p><em>TODO</em></p>
+<p><em>N/A</em></p>
 
 
 
@@ -673,5 +686,8 @@ true
 
 <table width="100%" border="0" summary="list of modules">
 <tr><td><a href="gen_ets.md" class="module">gen_ets</a></td></tr>
-<tr><td><a href="gen_ets_impl_ets.md" class="module">gen_ets_impl_ets</a></td></tr></table>
+<tr><td><a href="gen_ets_impl_ets.md" class="module">gen_ets_impl_ets</a></td></tr>
+<tr><td><a href="gen_ets_lib.md" class="module">gen_ets_lib</a></td></tr>
+<tr><td><a href="gen_ets_ns.md" class="module">gen_ets_ns</a></td></tr>
+<tr><td><a href="gen_ets_reg.md" class="module">gen_ets_reg</a></td></tr></table>
 

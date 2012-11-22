@@ -54,7 +54,7 @@ In particular, GEN_ETS differs from ETS in the following ways:
   GEN_ETS, this reserved atom is used to register a local named
   process and to create a named ets table.
 +
-CAUTION: Choose your application's namespace(s) wisely.
+CAUTION: Choose your application\'s namespace(s) wisely.
 
 For convience and testing purposes, GEN_ETS provides a default
 namespace wrapper and backend implementation based on ETS. See
