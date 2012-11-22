@@ -73,23 +73,18 @@ $ mkdir working-directory-name
 $ cd working-directory-name
 $ git clone https://github.com/norton/gen_ets.git gen_ets
 $ cd gen_ets
-$ ./rebar get-deps
-$ ./rebar clean
-$ ./rebar compile
+$ make deps clean compile
 ------
 
-_OR_ if QuickCheck is available then follow the this recipe:
+_OR_ if QuickCheck is available then follow this recipe:
 
 ------
 $ mkdir working-directory-name
 $ cd working-directory-name
 $ git clone https://github.com/norton/gen_ets.git gen_ets
 $ cd gen_ets
-$ ./rebar get-deps
-$ ./rebar clean
-$ ./rebar compile -D QC -D QC_EQC
-$ ./rebar test-compile -D QC -D QC_EQC
-$ (cd .eunit; erl -smp +A 5 -pz ../../qc/ebin)
+$ make deps clean eqc
+$ (cd .qc; erl -smp +A 5 -pz ../deps/qc/ebin)
 
 1> qc_statem_gen_ets:qc_run(500, []).
   :
@@ -193,20 +188,20 @@ $ cd working-directory-name
 $ repo sync
 ------
 
-For futher information and help for related tools, please refer to the
+For further information and help for related tools, please refer to the
 following links:
 
 - Erlang - http://www.erlang.org/
-  * *R14 or newer, R15B02 has been tested recently*
+  * *R15 or newer, R15B02 has been tested most recently*
 - Git - http://git-scm.com/
-  * *Git 1.5.4 or newer, Git 1.7.12 has been tested recently*
+  * *Git 1.5.4 or newer, Git 1.8.0 has been tested most recently*
   * _required for Repo and GitHub_
 - GitHub - https://github.com
 - Python - http://www.python.org
-  * *Python 2.4 or newer, Python 2.7.2 has been tested recently
+  * *Python 2.4 or newer, Python 2.7.2 has been tested most recently
     (CAUTION: Python 3.x might be too new)*
 * _required for Repo_
-  - Rebar - https://github.com/basho/rebar/wiki
+  - Rebar - https://github.com/rebar/rebar/wiki
   - Repo - http://source.android.com/source/git-repo.html
 
 == To build - basic recipe
@@ -267,13 +262,13 @@ true = code:add_pathz(os:getenv("HOME")++"/.erlang.d/deps/quviq/eqc-X.Y.Z/ebin")
 ------
 $ cd working-directory-name
 $ make clean
-$ make eqc-compile
+$ make compile-for-eqc
 ------
 
 3. Run 5,000 QuickCheck tests
 +
 ------
-$ cd working-directory-name/deps/gen_ets/.eunit
+$ cd working-directory-name/deps/gen_ets/.qc
 $ erl -smp +A 5 -pz -pz ../../qc/ebin
 
 1> qc_statem_gen_ets:qc_run(5000).
@@ -333,13 +328,13 @@ true = code:add_pathz(os:getenv("HOME")++"/.erlang.d/deps/proper/ebin").
 ------
 $ cd working-directory-name
 $ make clean
-$ make proper-compile
+$ make compile-for-proper
 ------
 
 3. Run 5,000 PropEr tests
 +
 ------
-$ cd working-directory-name/deps/gen_ets/.eunit
+$ cd working-directory-name/deps/gen_ets/.qc
 $ erl -smp +A 5 -pz -pz ../../qc/ebin
 
 1> qc_statem_gen_ets:qc_run(5000).
@@ -377,6 +372,5 @@ true
 
 == Roadmap
 
-_TODO_
-
+_N/A_
 @end
