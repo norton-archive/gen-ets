@@ -71,7 +71,7 @@ this recipe:
 ------
 $ mkdir working-directory-name
 $ cd working-directory-name
-$ git clone https://github.com/norton/gen_ets.git gen_ets
+$ git clone https://github.com/norton/gen-ets.git gen_ets
 $ cd gen_ets
 $ make deps clean compile
 ------
@@ -81,7 +81,7 @@ _OR_ if QuickCheck is available then follow this recipe:
 ------
 $ mkdir working-directory-name
 $ cd working-directory-name
-$ git clone https://github.com/norton/gen_ets.git gen_ets
+$ git clone https://github.com/norton/gen-ets.git gen_ets
 $ cd gen_ets
 $ make deps clean eqc
 $ (cd .qc; erl -smp +A 5 -pz ../deps/qc/ebin)
