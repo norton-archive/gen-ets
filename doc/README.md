@@ -219,7 +219,7 @@ this recipe:</p>
 
 <pre><code>$ mkdir working-directory-name
 $ cd working-directory-name
-$ git clone https://github.com/norton/gen_ets.git gen_ets
+$ git clone https://github.com/norton/gen-ets.git gen_ets
 $ cd gen_ets
 $ make deps clean compile</code></pre>
 
@@ -228,7 +228,7 @@ $ make deps clean compile</code></pre>
 
 <pre><code>$ mkdir working-directory-name
 $ cd working-directory-name
-$ git clone https://github.com/norton/gen_ets.git gen_ets
+$ git clone https://github.com/norton/gen-ets.git gen_ets
 $ cd gen_ets
 $ make deps clean eqc
 $ (cd .qc; erl -smp +A 5 -pz ../deps/qc/ebin)
