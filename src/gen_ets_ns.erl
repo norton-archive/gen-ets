@@ -1,6 +1,6 @@
 %%% The MIT License
 %%%
-%%% Copyright (C) 2011-2012 by Joseph Wayne Norton <norton@alum.mit.edu>
+%%% Copyright (C) 2011-2013 by Joseph Wayne Norton <norton@alum.mit.edu>
 %%%
 %%% Permission is hereby granted, free of charge, to any person obtaining a copy
 %%% of this software and associated documentation files (the "Software"), to deal
@@ -69,6 +69,7 @@
 -export_type([gen_tab/0, gen_tid/0, gen_ns/0]).
 -export_type([name/0, key/0, object/0]).
 -export_type([match_pattern/0, match_spec/0]).
+-export_type([cont/0]).
 
 %% Interface Functions
 -ifndef(old_callbacks).
