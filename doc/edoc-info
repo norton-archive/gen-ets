@@ -1,3 +1,4 @@
+%% encoding: UTF-8
 {application,gen_ets}.
 {packages,[]}.
 {modules,[gen_ets,gen_ets_impl_ets,gen_ets_lib,gen_ets_ns,gen_ets_reg]}.
