@@ -1,11 +1,11 @@
 
 
-#GEN_ETS - GEN(eric) Erlang Term Storage#
-
+# GEN_ETS - GEN(eric) Erlang Term Storage #
 
 Copyright (c) 2011-2013 by Joseph Wayne Norton
 
-__Authors:__ Joseph Wayne Norton ([`norton@alum.mit.edu`](mailto:norton@alum.mit.edu)).<p>GEN_ETS is an generic wrapper for Erlang Term Storage with a callback
+__Authors:__ Joseph Wayne Norton ([`norton@alum.mit.edu`](mailto:norton@alum.mit.edu)).
+<p>GEN_ETS is an generic wrapper for Erlang Term Storage with a callback
 interface for a backend implementation.</p>
 <p>GEN_ETS is not intended to be an exact clone of ETS.  The currently
 supported ETS APIs are:</p>
@@ -681,7 +681,7 @@ true
 
 
 
-##Modules##
+## Modules ##
 
 
 <table width="100%" border="0" summary="list of modules">
