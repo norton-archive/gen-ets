@@ -382,7 +382,7 @@ table <code>Tab</code> and returns the number deleted.</p>.</td></tr><tr><td val
 spec <code>Spec</code>.</p>.</td></tr><tr><td valign="top"><a href="#select_reverse-4">select_reverse/4</a></td><td><p>Matches in reverse the objects in the table <code>Tab</code> against the
 spec <code>Spec</code> and returns a limited (<code>Limit</code>) number of matching
 objects.</p>.</td></tr><tr><td valign="top"><a href="#tab2list-2">tab2list/2</a></td><td><p>Returns a list of all objects in the table <code>Tab</code>. The
-operation is <strong>not</strong> guaranteed to be atomic and isolated.</p>.</td></tr><tr><td valign="top"><a href="#tid-2">tid/2</a></td><td><p>Returns a table[8217,115,32,105,100,101,110,116,105,102,105,101,114,46]</p>.</td></tr></table>
+operation is <strong>not</strong> guaranteed to be atomic and isolated.</p>.</td></tr><tr><td valign="top"><a href="#tid-2">tid/2</a></td><td><p>Returns a table's identifier.</p>.</td></tr></table>
 
 
 <a name="functions"></a>
@@ -1140,5 +1140,5 @@ tid(NS::<a href="#type-gen_ns">gen_ns()</a>, Tab::<a href="#type-gen_tab">gen_ta
 <br></br>
 
 
-<p>Returns a table[8217,115,32,105,100,101,110,116,105,102,105,101,114,46]</p>
+<p>Returns a table's identifier.</p>
 

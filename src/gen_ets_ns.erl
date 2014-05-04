@@ -235,7 +235,7 @@ behaviour_info(_Other) ->
 all(NS) ->
     gen_ets_reg:list(NS).
 
-%% @doc Returns a table's identifier.
+%% @doc Returns a table\'s identifier.
 %% @end
 
 -spec tid(gen_ns(), gen_tab()) -> gen_tid().
