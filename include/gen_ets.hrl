@@ -34,7 +34,8 @@
                   async=false :: boolean(),
                   ns :: atom(),
                   mod :: module(),
-                  impl :: term()
+                  impl :: term(),
+                  impl_opts :: term()
                  }).
 
 -endif. % -ifndef(gen_ets).

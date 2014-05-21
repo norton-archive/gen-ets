@@ -27,6 +27,7 @@
 %% External exports
 -export([all/1
          , tid/2
+         , tid/3
          , new/3
          , destroy/3
          , repair/3
@@ -209,10 +210,10 @@ behaviour_info(_Other) ->
 -type impl_opt()      :: term().
 -type impl()          :: term().
 
--type key()       :: term().
--type object()    :: tuple().
+-type key()           :: term().
+-type object()        :: tuple().
 
--type name()      :: term().
+-type name()          :: term().
 -type item()          :: owner | name | named_table | type | keypos | protection | compressed | async | memory | size.
 -type pos()           :: pos_integer().
 -type match_pattern() :: atom() | tuple(). % ets:match_pattern() is not exported!
@@ -245,6 +246,19 @@ tid(NS, Tab) ->
             erlang:error(badarg, [NS, Tab]);
         Tid ->
             Tid
+    end.
+
+%% @doc Returns a copy of a table\'s identifier with the given
+%% implementation options.
+%% @end
+
+-spec tid(gen_ns(), gen_tab(), term()) -> gen_tid().
+tid(NS, Tab, Opts) ->
+    case check_access(NS, Tab) of
+        undefined ->
+            erlang:error(badarg, [NS, Tab]);
+        Tid ->
+            Tid#gen_tid{impl_opts=Opts}
     end.
 
 %% @doc Creates a new table and returns a table identifier which can
@@ -283,9 +297,9 @@ tid(NS, Tab) ->
 %%   implementation, the emulator\'s async thread pool will be used
 %%   when accessing the table data.
 %%
-%% - +{impl, module(), [impl_option()]}+ The module that implements
-%%   GEN_ETS callback functions.  Implementation specific options can
-%%   be given. The default is +{impl, gen_ets_impl_ets, []}+.
+%% - +{impl, module(), impl_opts()}+ The module that implements
+%%   GEN_ETS callback functions.  Implementation specific options can be
+%%   given. The default is +{impl, gen_ets_impl_ets, []}+.
 %%
 %% @end
 %% @see ets:new/2
@@ -837,12 +851,12 @@ check_access(NS, Name) ->
     end.
 
 create(NS, Op, Name, Opts) ->
-    case options(Opts) of
-        {POpts, []} ->
-            POpts;
-        {POpts, BadArgs} ->
-            erlang:error(badarg, [NS, Name, BadArgs])
-    end,
+    POpts = case options(Opts) of
+                {POpts0, []} ->
+                    POpts0;
+                {_POpts0, BadArgs} ->
+                    erlang:error(badarg, [NS, Name, BadArgs])
+            end,
 
     Owner = self(),
     NamedTable = proplists:get_bool(named_table, POpts),
