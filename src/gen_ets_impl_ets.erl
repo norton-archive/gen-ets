@@ -59,12 +59,12 @@
 %%% API
 %%%----------------------------------------------------------------------
 
-open(#gen_tid{name=Name, type=Type, keypos=KeyPos, protection=Protection, compressed=Compressed}, Opts) ->
+open(#gen_tid{name=Name, type=Type, keypos=KeyPos, protection=Protection, compressed=Compressed}=Tid, Opts) ->
     EffOpts =
         [Type, {keypos,KeyPos}, public] ++
         [ compressed || Compressed ] ++
         proplists:delete(Protection, proplists:delete(named_table, Opts)),
-    ets:new(Name, EffOpts).
+    Tid#gen_tid{impl=ets:new(Name, EffOpts)}.
 
 destroy(#gen_tid{}, _Opts) ->
     true.

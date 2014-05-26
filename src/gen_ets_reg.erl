@@ -206,8 +206,7 @@ delete_object(NS, Reg) ->
 loop(#gen_tid{ns=NS, mod=Mod}=PreTid, Op, Opts, PreReg, Parent) ->
     ParentRef = monitor(process, Parent),
 
-    Impl = Mod:Op(PreTid, Opts),
-    Tid = PreTid#gen_tid{impl=Impl},
+    Tid = Mod:Op(PreTid, Opts),
     Reg = PreReg#gen_reg{pid=self(), tid=Tid},
 
     ets:insert(NS, Reg),
