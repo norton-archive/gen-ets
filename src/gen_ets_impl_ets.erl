@@ -47,6 +47,7 @@
          , next_iter/2
          , prev/2
          , prev_iter/2
+         , notify/4
         ]).
 
 
@@ -145,6 +146,9 @@ prev_iter(#gen_tid{impl=Impl}, Key) ->
         PrevKey ->
             safe_lookup(Impl, PrevKey)
     end.
+
+notify(#gen_tid{impl=_Impl}, _Event, _Pid, _Msg) ->
+    false.
 
 %%%----------------------------------------------------------------------
 %%% Internal functions

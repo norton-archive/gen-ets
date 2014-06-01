@@ -96,6 +96,7 @@
 -callback next_iter(#gen_tid{}, key()) -> object() | '$end_of_table'.
 -callback prev(#gen_tid{}, key()) -> key() | '$end_of_table'.
 -callback prev_iter(#gen_tid{}, key()) -> object() | '$end_of_table'.
+-callback notify(#gen_tid{}, when_destroyed, pid(), term()) -> true.
 
 -else. % -ifndef(old_callbacks).
 
@@ -124,6 +125,7 @@ behaviour_info(callbacks) ->
      , {next_iter,2}
      , {prev,2}
      , {prev_iter,2}
+     , {notify,4}
     ];
 behaviour_info(_Other) ->
 	undefined.
