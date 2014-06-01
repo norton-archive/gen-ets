@@ -10,7 +10,7 @@ __Behaviours:__ [`gen_ets_ns`](gen_ets_ns.md).
 ## Function Index ##
 
 
-<table width="100%" border="1" cellspacing="0" cellpadding="2" summary="function index"><tr><td valign="top"><a href="#delete-1">delete/1</a></td><td></td></tr><tr><td valign="top"><a href="#delete-2">delete/2</a></td><td></td></tr><tr><td valign="top"><a href="#delete_all_objects-1">delete_all_objects/1</a></td><td></td></tr><tr><td valign="top"><a href="#destroy-2">destroy/2</a></td><td></td></tr><tr><td valign="top"><a href="#first-1">first/1</a></td><td></td></tr><tr><td valign="top"><a href="#first_iter-1">first_iter/1</a></td><td></td></tr><tr><td valign="top"><a href="#info_memory-1">info_memory/1</a></td><td></td></tr><tr><td valign="top"><a href="#info_size-1">info_size/1</a></td><td></td></tr><tr><td valign="top"><a href="#insert-2">insert/2</a></td><td></td></tr><tr><td valign="top"><a href="#insert_new-2">insert_new/2</a></td><td></td></tr><tr><td valign="top"><a href="#last-1">last/1</a></td><td></td></tr><tr><td valign="top"><a href="#last_iter-1">last_iter/1</a></td><td></td></tr><tr><td valign="top"><a href="#lookup-2">lookup/2</a></td><td></td></tr><tr><td valign="top"><a href="#lookup_element-3">lookup_element/3</a></td><td></td></tr><tr><td valign="top"><a href="#member-2">member/2</a></td><td></td></tr><tr><td valign="top"><a href="#next-2">next/2</a></td><td></td></tr><tr><td valign="top"><a href="#next_iter-2">next_iter/2</a></td><td></td></tr><tr><td valign="top"><a href="#open-2">open/2</a></td><td></td></tr><tr><td valign="top"><a href="#prev-2">prev/2</a></td><td></td></tr><tr><td valign="top"><a href="#prev_iter-2">prev_iter/2</a></td><td></td></tr><tr><td valign="top"><a href="#repair-2">repair/2</a></td><td></td></tr></table>
+<table width="100%" border="1" cellspacing="0" cellpadding="2" summary="function index"><tr><td valign="top"><a href="#delete-1">delete/1</a></td><td></td></tr><tr><td valign="top"><a href="#delete-2">delete/2</a></td><td></td></tr><tr><td valign="top"><a href="#delete_all_objects-1">delete_all_objects/1</a></td><td></td></tr><tr><td valign="top"><a href="#destroy-2">destroy/2</a></td><td></td></tr><tr><td valign="top"><a href="#first-1">first/1</a></td><td></td></tr><tr><td valign="top"><a href="#first_iter-1">first_iter/1</a></td><td></td></tr><tr><td valign="top"><a href="#info_memory-1">info_memory/1</a></td><td></td></tr><tr><td valign="top"><a href="#info_size-1">info_size/1</a></td><td></td></tr><tr><td valign="top"><a href="#insert-2">insert/2</a></td><td></td></tr><tr><td valign="top"><a href="#insert_new-2">insert_new/2</a></td><td></td></tr><tr><td valign="top"><a href="#last-1">last/1</a></td><td></td></tr><tr><td valign="top"><a href="#last_iter-1">last_iter/1</a></td><td></td></tr><tr><td valign="top"><a href="#lookup-2">lookup/2</a></td><td></td></tr><tr><td valign="top"><a href="#lookup_element-3">lookup_element/3</a></td><td></td></tr><tr><td valign="top"><a href="#member-2">member/2</a></td><td></td></tr><tr><td valign="top"><a href="#next-2">next/2</a></td><td></td></tr><tr><td valign="top"><a href="#next_iter-2">next_iter/2</a></td><td></td></tr><tr><td valign="top"><a href="#notify-4">notify/4</a></td><td></td></tr><tr><td valign="top"><a href="#open-2">open/2</a></td><td></td></tr><tr><td valign="top"><a href="#prev-2">prev/2</a></td><td></td></tr><tr><td valign="top"><a href="#prev_iter-2">prev_iter/2</a></td><td></td></tr><tr><td valign="top"><a href="#repair-2">repair/2</a></td><td></td></tr></table>
 
 
 <a name="functions"></a>
@@ -134,6 +134,13 @@ __Behaviours:__ [`gen_ets_ns`](gen_ets_ns.md).
 ### next_iter/2 ###
 
 `next_iter(Gen_tid, Key) -> any()`
+
+
+<a name="notify-4"></a>
+
+### notify/4 ###
+
+`notify(Gen_tid, Event, Pid, Msg) -> any()`
 
 
 <a name="open-2"></a>

@@ -7,7 +7,7 @@
 
 __This module defines the `gen_ets_ns` behaviour.__
 <br></br>
- Required callback functions: `open/2`, `destroy/2`, `repair/2`, `delete/1`, `delete/2`, `delete_all_objects/1`, `first/1`, `first_iter/1`, `info_memory/1`, `info_size/1`, `insert/2`, `insert_new/2`, `last/1`, `last_iter/1`, `lookup/2`, `lookup_element/3`, `member/2`, `next/2`, `next_iter/2`, `prev/2`, `prev_iter/2`.
+ Required callback functions: `open/2`, `destroy/2`, `repair/2`, `delete/1`, `delete/2`, `delete_all_objects/1`, `first/1`, `first_iter/1`, `info_memory/1`, `info_size/1`, `insert/2`, `insert_new/2`, `last/1`, `last_iter/1`, `lookup/2`, `lookup_element/3`, `member/2`, `next/2`, `next_iter/2`, `prev/2`, `prev_iter/2`, `notify/4`.
 
 <a name="types"></a>
 
@@ -362,9 +362,9 @@ when accessing the table data.
 </li>
 <li>
 <p>
-<code>{impl, module(), [impl_option()]}</code> The module that implements
-GEN_ETS callback functions.  Implementation specific options can
-be given. The default is <code>{impl, gen_ets_impl_ets, []}</code>.
+<code>{impl, module(), impl_opts()}</code> The module that implements
+GEN_ETS callback functions.  Implementation specific options can be
+given. The default is <code>{impl, gen_ets_impl_ets, []}</code>.
 </p>
 </li>
 </ul>.</td></tr><tr><td valign="top"><a href="#next-3">next/3</a></td><td><p>Returns the next key <code>Key2</code>, following the key <code>Key1</code> in the
@@ -382,7 +382,8 @@ table <code>Tab</code> and returns the number deleted.</p>.</td></tr><tr><td val
 spec <code>Spec</code>.</p>.</td></tr><tr><td valign="top"><a href="#select_reverse-4">select_reverse/4</a></td><td><p>Matches in reverse the objects in the table <code>Tab</code> against the
 spec <code>Spec</code> and returns a limited (<code>Limit</code>) number of matching
 objects.</p>.</td></tr><tr><td valign="top"><a href="#tab2list-2">tab2list/2</a></td><td><p>Returns a list of all objects in the table <code>Tab</code>. The
-operation is <strong>not</strong> guaranteed to be atomic and isolated.</p>.</td></tr><tr><td valign="top"><a href="#tid-2">tid/2</a></td><td><p>Returns a table's identifier.</p>.</td></tr></table>
+operation is <strong>not</strong> guaranteed to be atomic and isolated.</p>.</td></tr><tr><td valign="top"><a href="#tid-2">tid/2</a></td><td><p>Returns a table's identifier.</p>.</td></tr><tr><td valign="top"><a href="#tid-3">tid/3</a></td><td><p>Returns a copy of a table's identifier with the given
+implementation options.</p>.</td></tr></table>
 
 
 <a name="functions"></a>
@@ -914,9 +915,9 @@ when accessing the table data.
 </li>
 <li>
 <p>
-<code>{impl, module(), [impl_option()]}</code> The module that implements
-GEN_ETS callback functions.  Implementation specific options can
-be given. The default is <code>{impl, gen_ets_impl_ets, []}</code>.
+<code>{impl, module(), impl_opts()}</code> The module that implements
+GEN_ETS callback functions.  Implementation specific options can be
+given. The default is <code>{impl, gen_ets_impl_ets, []}</code>.
 </p>
 </li>
 </ul>
@@ -1141,4 +1142,19 @@ tid(NS::<a href="#type-gen_ns">gen_ns()</a>, Tab::<a href="#type-gen_tab">gen_ta
 
 
 <p>Returns a table's identifier.</p>
+
+<a name="tid-3"></a>
+
+### tid/3 ###
+
+
+<pre><code>
+tid(NS::<a href="#type-gen_ns">gen_ns()</a>, Tab::<a href="#type-gen_tab">gen_tab()</a>, Opts::term()) -&gt; <a href="#type-gen_tid">gen_tid()</a>
+</code></pre>
+
+<br></br>
+
+
+<p>Returns a copy of a table's identifier with the given
+implementation options.</p>
 
