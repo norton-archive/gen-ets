@@ -65,28 +65,28 @@ foldr(Fun, Acc0, #gen_tid{mod=Mod}=Tid) ->
     foldr(Fun, Acc0, Tid, Mod:last_iter(Tid)).
 
 nfoldl(Fun, Acc0, #gen_tid{mod=Mod}=Tid, Limit) when Limit > 0 ->
-    nfoldl(Fun, Acc0, Acc0, Tid, Limit, Limit, Mod:first_iter(Tid));
+    nfoldl(Fun, Acc0, Acc0, Tid, Limit, Mod:first_iter(Tid, Limit));
 nfoldl(_Fun, _Acc0, _Tid, Limit) ->
     exit({badarg,Limit}).
 
 nfoldl('$end_of_table') ->
     '$end_of_table';
-nfoldl({_Fun, _Acc0, _Tid, _Limit0, '$end_of_table'}) ->
+nfoldl({_Fun, _Acc0, _Tid, _Limit, '$end_of_table'}) ->
     '$end_of_table';
-nfoldl({Fun, Acc0, #gen_tid{mod=Mod}=Tid, Limit0, Key}) ->
-    nfoldl(Fun, Acc0, Acc0, Tid, Limit0, Limit0, Mod:next_iter(Tid, Key)).
+nfoldl({Fun, Acc0, #gen_tid{mod=Mod}=Tid, Limit, Key}) ->
+    nfoldl(Fun, Acc0, Acc0, Tid, Limit, Mod:next_iter(Tid, Key, Limit)).
 
 nfoldr(Fun, Acc0, #gen_tid{mod=Mod}=Tid, Limit) when Limit > 0 ->
-    nfoldr(Fun, Acc0, Acc0, Tid, Limit, Limit, Mod:last_iter(Tid));
+    nfoldr(Fun, Acc0, Acc0, Tid, Limit, Mod:last_iter(Tid, Limit));
 nfoldr(_Fun, _Acc0, _Tid, Limit) ->
     exit({badarg,Limit}).
 
 nfoldr('$end_of_table') ->
     '$end_of_table';
-nfoldr({_Fun, _Acc0, _Tid, _Limit0, '$end_of_table'}) ->
+nfoldr({_Fun, _Acc0, _Tid, _Limit, '$end_of_table'}) ->
     '$end_of_table';
-nfoldr({Fun, Acc0, #gen_tid{mod=Mod}=Tid, Limit0, Key}) ->
-    nfoldr(Fun, Acc0, Acc0, Tid, Limit0, Limit0, Mod:prev_iter(Tid, Key)).
+nfoldr({Fun, Acc0, #gen_tid{mod=Mod}=Tid, Limit, Key}) ->
+    nfoldr(Fun, Acc0, Acc0, Tid, Limit, Mod:prev_iter(Tid, Key, Limit)).
 
 tab2list(Tid) ->
     foldr(fun(X, Acc) -> [X|Acc] end, [], Tid).
@@ -187,44 +187,52 @@ foldr(Fun, Acc, #gen_tid{keypos=KeyPos, mod=Mod}=Tid, Object) ->
     Key = element(KeyPos, Object),
     foldr(Fun, Fun(Object, Acc), Tid, Mod:prev_iter(Tid, Key)).
 
-nfoldl(_Fun, Acc0, Acc0, Tid, _Limit0, _Limit, '$end_of_table') ->
+nfoldl(_Fun, Acc0, Acc0, Tid, _Limit, '$end_of_table') ->
     ets_safe_fixtable(Tid, false),
     '$end_of_table';
-nfoldl(_Fun, _Acc0, Acc, Tid, _Limit0, _Limit, '$end_of_table'=Cont) ->
+nfoldl(_Fun, _Acc0, Acc, Tid, _Limit, '$end_of_table'=Cont) ->
     ets_safe_fixtable(Tid, false),
     {Acc, Cont};
-nfoldl(Fun, Acc0, Acc, #gen_tid{keypos=KeyPos, mod=Mod}=Tid, Limit0, Limit, Object) ->
-    Key = element(KeyPos, Object),
-    case Fun(Object, Acc) of
-        {true, NewAcc} ->
-            if Limit > 1 ->
-                    nfoldl(Fun, Acc0, NewAcc, Tid, Limit0, Limit-1, Mod:next_iter(Tid, Key));
-               true ->
-                    Cont = {Fun, Acc0, Tid, Limit0, Key},
-                    {NewAcc, Cont}
-            end;
-        {false, NewAcc} ->
-            nfoldl(Fun, Acc0, NewAcc, Tid, Limit0, Limit, Mod:next_iter(Tid, Key))
+nfoldl(Fun, Acc0, Acc, #gen_tid{keypos=KeyPos, mod=Mod}=Tid, Limit, Objects) ->
+    Fun1 = fun(Object, {N, _, Acc1}) ->
+                   Key = element(KeyPos, Object),
+                   case Fun(Object, Acc1) of
+                       {true, NewAcc} ->
+                           {N+1, Key, NewAcc};
+                       {false, NewAcc} ->
+                           {N, Key, NewAcc}
+                   end
+           end,
+    case lists:foldl(Fun1, {0, undefined, Acc}, Objects) of
+        {0, Key, Acc2} ->
+            nfoldl(Fun, Acc0, Acc2, Tid, Limit, Mod:next_iter(Tid, Key, Limit));
+        {_, Key, Acc2} ->
+            Cont = {Fun, Acc0, Tid, Limit, Key},
+            {Acc2, Cont}
     end.
 
-nfoldr(_Fun, Acc0, Acc0, Tid, _Limit0, _Limit, '$end_of_table') ->
+nfoldr(_Fun, Acc0, Acc0, Tid, _Limit, '$end_of_table') ->
     ets_safe_fixtable(Tid, false),
     '$end_of_table';
-nfoldr(_Fun, _Acc0, Acc, Tid, _Limit0, _Limit, '$end_of_table'=Cont) ->
+nfoldr(_Fun, _Acc0, Acc, Tid, _Limit, '$end_of_table'=Cont) ->
     ets_safe_fixtable(Tid, false),
     {Acc, Cont};
-nfoldr(Fun, Acc0, Acc, #gen_tid{keypos=KeyPos, mod=Mod}=Tid, Limit0, Limit, Object) ->
-    Key = element(KeyPos, Object),
-    case Fun(Object, Acc) of
-        {true, NewAcc} ->
-            if Limit > 1 ->
-                    nfoldr(Fun, Acc0, NewAcc, Tid, Limit0, Limit-1, Mod:prev_iter(Tid, Key));
-               true ->
-                    Cont = {Fun, Acc0, Tid, Limit0, Key},
-                    {NewAcc, Cont}
-            end;
-        {false, NewAcc} ->
-            nfoldr(Fun, Acc0, NewAcc, Tid, Limit0, Limit, Mod:prev_iter(Tid, Key))
+nfoldr(Fun, Acc0, Acc, #gen_tid{keypos=KeyPos, mod=Mod}=Tid, Limit, Objects) ->
+    Fun1 = fun(Object, {N, _, Acc1}) ->
+                   Key = element(KeyPos, Object),
+                   case Fun(Object, Acc1) of
+                       {true, NewAcc} ->
+                           {N+1, Key, NewAcc};
+                       {false, NewAcc} ->
+                           {N, Key, NewAcc}
+                   end
+           end,
+    case lists:foldr(Fun1, {0, undefined, Acc}, Objects) of
+        {0, Key, Acc2} ->
+            nfoldr(Fun, Acc0, Acc2, Tid, Limit, Mod:prev_iter(Tid, Key, Limit));
+        {_, Key, Acc2} ->
+            Cont = {Fun, Acc0, Tid, Limit, Key},
+            {Acc2, Cont}
     end.
 
 selectl(Fun, Acc0, Tid, Spec) ->
@@ -235,13 +243,13 @@ selectr(Fun, Acc0, Tid, Spec) ->
     ets_safe_fixtable(Tid, true),
     foldr(selectfun(Fun, Spec), Acc0, Tid).
 
-nselectl(Fun, Acc0, Tid, Spec, Limit0) ->
+nselectl(Fun, Acc0, Tid, Spec, Limit) ->
     ets_safe_fixtable(Tid, true),
-    nfoldl(nselectfun(Fun, Spec), Acc0, Tid, Limit0).
+    nfoldl(nselectfun(Fun, Spec), Acc0, Tid, Limit).
 
-nselectr(Fun, Acc0, Tid, Spec, Limit0) ->
+nselectr(Fun, Acc0, Tid, Spec, Limit) ->
     ets_safe_fixtable(Tid, true),
-    nfoldr(nselectfun(Fun, Spec), Acc0, Tid, Limit0).
+    nfoldr(nselectfun(Fun, Spec), Acc0, Tid, Limit).
 
 nselectl(Cont) ->
     nfoldl(Cont).
