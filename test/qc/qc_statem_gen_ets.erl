@@ -190,7 +190,7 @@ fold_helper(X, Acc) ->
 
 -spec initial_state() -> #state{}.
 initial_state() ->
-    #state{}.
+    initial_state([]).
 
 -spec initial_state(proplist()) -> #state{}.
 initial_state(Opts) ->
