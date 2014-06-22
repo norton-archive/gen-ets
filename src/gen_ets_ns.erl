@@ -98,14 +98,14 @@
 -callback prev_iter(#gen_tid{}, key()) -> object() | '$end_of_table'.
 -callback notify(#gen_tid{}, when_destroyed, pid(), term()) -> boolean().
 
--callback first(#gen_tid{}, pos_integer()) -> [key()] | '$end_of_table'.
--callback first_iter(#gen_tid{}, pos_integer()) -> [object()] | '$end_of_table'.
--callback last(#gen_tid{}, pos_integer()) -> [key()] | '$end_of_table'.
--callback last_iter(#gen_tid{}, pos_integer()) -> [object()] | '$end_of_table'.
--callback next(#gen_tid{}, key(), pos_integer()) -> [key()] | '$end_of_table'.
--callback next_iter(#gen_tid{}, key(), pos_integer()) -> [object()] | '$end_of_table'.
--callback prev(#gen_tid{}, key(), pos_integer()) -> [key()] | '$end_of_table'.
--callback prev_iter(#gen_tid{}, key(), pos_integer()) -> [object()] | '$end_of_table'.
+-callback first(#gen_tid{}, non_neg_integer()) -> [key()] | '$end_of_table'.
+-callback first_iter(#gen_tid{}, non_neg_integer()) -> [object()] | '$end_of_table'.
+-callback last(#gen_tid{}, non_neg_integer()) -> [key()] | '$end_of_table'.
+-callback last_iter(#gen_tid{}, non_neg_integer()) -> [object()] | '$end_of_table'.
+-callback next(#gen_tid{}, key(), non_neg_integer()) -> [key()] | '$end_of_table'.
+-callback next_iter(#gen_tid{}, key(), non_neg_integer()) -> [object()] | '$end_of_table'.
+-callback prev(#gen_tid{}, key(), non_neg_integer()) -> [key()] | '$end_of_table'.
+-callback prev_iter(#gen_tid{}, key(), non_neg_integer()) -> [object()] | '$end_of_table'.
 
 -else. % -ifndef(old_callbacks).
 
