@@ -227,7 +227,7 @@ nfoldr(Fun, Acc0, Acc, #gen_tid{keypos=KeyPos, mod=Mod}=Tid, Limit, Objects) ->
                            {N, Key, NewAcc}
                    end
            end,
-    case lists:foldr(Fun1, {0, undefined, Acc}, Objects) of
+    case lists:foldl(Fun1, {0, undefined, Acc}, Objects) of
         {0, Key, Acc2} ->
             nfoldr(Fun, Acc0, Acc2, Tid, Limit, Mod:prev_iter(Tid, Key, Limit));
         {_, Key, Acc2} ->
