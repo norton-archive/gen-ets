@@ -158,145 +158,90 @@ prev_iter(#gen_tid{impl=Impl}, Key) ->
 notify(#gen_tid{impl=_Impl}, _Event, _Pid, _Msg) ->
     false.
 
-first(#gen_tid{impl=Impl}=Tid, N) when N > 0 ->
-    case ets:first(Impl) of
+first(Tid, N) when N >= 0 ->
+    case first(Tid) of
         '$end_of_table' ->
             '$end_of_table';
-        Key when N==1 ->
-            [Key];
         Key ->
-            case next(Tid, Key, N-1) of
-                '$end_of_table' ->
-                    [Key];
-                Keys ->
-                    [Key|Keys]
-            end
+            get_next(Tid, Key, N)
     end;
+
 first(Tid, N) ->
     erlang:error(badarg, [Tid, N]).
 
-first_iter(#gen_tid{impl=Impl}=Tid, N) when N > 0 ->
-    case ets:first(Impl) of
+first_iter(Tid, N) when N >= 0 ->
+    case first(Tid) of
         '$end_of_table' ->
             '$end_of_table';
-        Key when N==1 ->
-            [safe_lookup(Impl, Key)];
         Key ->
-            case next_iter(Tid, Key, N-1) of
-                '$end_of_table' ->
-                    [safe_lookup(Impl, Key)];
-                Objects ->
-                    [safe_lookup(Impl, Key)|Objects]
-            end
-
+            get_next_iter(Tid, Key, N)
     end;
 first_iter(Tid, N) ->
     erlang:error(badarg, [Tid, N]).
 
-last(#gen_tid{impl=Impl}=Tid, N) when N > 0 ->
-    case ets:last(Impl) of
+
+last(Tid, N) when N >= 0 ->
+    case last(Tid) of
         '$end_of_table' ->
             '$end_of_table';
-        Key when N==1 ->
-            [Key];
         Key ->
-            case prev(Tid, Key, N-1) of
-                '$end_of_table' ->
-                    [Key];
-                Keys ->
-                    Keys++[Key]
-            end
+            get_prev(Tid, Key, N)
     end;
 
 last(Tid, N) ->
     erlang:error(badarg, [Tid, N]).
 
-last_iter(#gen_tid{impl=Impl}=Tid, N) when N > 0 ->
-    case ets:last(Impl) of
+last_iter(Tid, N) when N >= 0 ->
+    case last(Tid) of
         '$end_of_table' ->
             '$end_of_table';
-        Key when N==1 ->
-            [safe_lookup(Impl, Key)];
         Key ->
-            case prev_iter(Tid, Key, N-1) of
-                '$end_of_table' ->
-                    [safe_lookup(Impl, Key)];
-                Objects ->
-                    Objects++[safe_lookup(Impl, Key)]
-            end
-
+            get_prev_iter(Tid, Key, N)
     end;
 last_iter(Tid, N) ->
     erlang:error(badarg, [Tid, N]).
 
-next(#gen_tid{impl=Impl}=Tid, Key, N) when N > 0 ->
-    case ets:next(Impl, Key) of
+next(Tid, Key, N) when N >= 0 ->
+    case next(Tid, Key) of
         '$end_of_table' ->
             '$end_of_table';
-        NextKey when N==1 ->
-            [NextKey];
         NextKey ->
-            case next(Tid, NextKey, N-1) of
-                '$end_of_table' ->
-                    [NextKey];
-                Keys ->
-                    [NextKey|Keys]
-            end
+            get_next(Tid, NextKey, N)
     end;
+
 next(Tid, Key, N) ->
     erlang:error(badarg, [Tid, Key, N]).
 
-next_iter(#gen_tid{impl=Impl}=Tid, Key, N) when N > 0 ->
-    case safe_next(Impl, Key) of
+next_iter(Tid, Key, N) when N >= 0 ->
+    case next(Tid, Key) of
         '$end_of_table' ->
             '$end_of_table';
-        NextKey when N==1 ->
-            [safe_lookup(Impl, NextKey)];
         NextKey ->
-            case next_iter(Tid, NextKey, N-1) of
-                '$end_of_table' ->
-                    [safe_lookup(Impl, NextKey)];
-                Objects ->
-                    [safe_lookup(Impl, NextKey)|Objects]
-            end
+            get_next_iter(Tid, NextKey, N)
     end;
 next_iter(Tid, Key, N) ->
     erlang:error(badarg, [Tid, Key, N]).
 
-prev(#gen_tid{impl=Impl}=Tid, Key, N) when N > 0 ->
-    case ets:prev(Impl, Key) of
+prev(Tid, Key, N) when N >= 0 ->
+    case prev(Tid, Key) of
         '$end_of_table' ->
             '$end_of_table';
-        PrevKey when N==1 ->
-            [PrevKey];
         PrevKey ->
-            case prev(Tid, PrevKey, N-1) of
-                '$end_of_table' ->
-                    [PrevKey];
-                Keys ->
-                    Keys++[PrevKey]
-            end
+            get_prev(Tid, PrevKey, N)
     end;
+
 prev(Tid, Key, N) ->
     erlang:error(badarg, [Tid, Key, N]).
 
-prev_iter(#gen_tid{impl=Impl}=Tid, Key, N) when N > 0 ->
-    case safe_prev(Impl, Key) of
+prev_iter(Tid, Key, N) when N >= 0 ->
+    case prev(Tid, Key) of
         '$end_of_table' ->
             '$end_of_table';
-        PrevKey when N==1 ->
-            [safe_lookup(Impl, PrevKey)];
         PrevKey ->
-            case prev_iter(Tid, PrevKey, N-1) of
-                '$end_of_table' ->
-                    [safe_lookup(Impl, PrevKey)];
-                Objects ->
-                    Objects++[safe_lookup(Impl, PrevKey)]
-            end
+            get_prev_iter(Tid, PrevKey, N)
     end;
 prev_iter(Tid, Key, N) ->
     erlang:error(badarg, [Tid, Key, N]).
-
 
 %%%----------------------------------------------------------------------
 %%% Internal functions
@@ -324,4 +269,46 @@ safe_lookup(Impl, Key) ->
             '$end_of_table';
         [Object] ->
             Object
+    end.
+
+get_next(#gen_tid{impl=Impl}, Key, N) ->
+    get_next(Impl, Key, N, []).
+
+get_next(_Impl, Key, N, Acc) when Key=='$end_of_table'; N==0 ->
+    lists:reverse(Acc);
+get_next(Impl, Key, N, Acc) ->
+    get_next(Impl, safe_next(Impl, Key), N-1, [Key|Acc]).
+
+get_next_iter(#gen_tid{impl=Impl}, Key, N) ->
+    get_next_iter(Impl, Key, N, []).
+
+get_next_iter(_Impl, Key, N, Acc) when Key=='$end_of_table'; N==0 ->
+    lists:reverse(Acc);
+get_next_iter(Impl, Key, N, Acc) ->
+    case safe_lookup(Impl, Key) of
+        '$end_of_table' ->
+            lists:reverse(Acc);
+        Object ->
+            get_next_iter(Impl, safe_next(Impl, Key), N-1, [Object|Acc])
+    end.
+
+get_prev(#gen_tid{impl=Impl}, Key, N) ->
+    get_prev(Impl, Key, N, []).
+
+get_prev(_Impl, Key, N, Acc) when Key=='$end_of_table'; N==0 ->
+    lists:reverse(Acc);
+get_prev(Impl, Key, N, Acc) ->
+    get_prev(Impl, safe_prev(Impl, Key), N-1, [Key|Acc]).
+
+get_prev_iter(#gen_tid{impl=Impl}, Key, N) ->
+    get_prev_iter(Impl, Key, N, []).
+
+get_prev_iter(_Impl, Key, N, Acc) when Key=='$end_of_table'; N==0 ->
+    lists:reverse(Acc);
+get_prev_iter(Impl, Key, N, Acc) ->
+    case safe_lookup(Impl, Key) of
+        '$end_of_table' ->
+            lists:reverse(Acc);
+        Object ->
+            get_prev_iter(Impl, safe_prev(Impl, Key), N-1, [Object|Acc])
     end.
