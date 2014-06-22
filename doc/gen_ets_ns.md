@@ -7,7 +7,7 @@
 
 __This module defines the `gen_ets_ns` behaviour.__
 <br></br>
- Required callback functions: `open/2`, `destroy/2`, `repair/2`, `delete/1`, `delete/2`, `delete_all_objects/1`, `first/1`, `first_iter/1`, `info_memory/1`, `info_size/1`, `insert/2`, `insert_new/2`, `last/1`, `last_iter/1`, `lookup/2`, `lookup_element/3`, `member/2`, `next/2`, `next_iter/2`, `prev/2`, `prev_iter/2`, `notify/4`.
+ Required callback functions: `open/2`, `destroy/2`, `repair/2`, `delete/1`, `delete/2`, `delete_all_objects/1`, `first/1`, `first_iter/1`, `info_memory/1`, `info_size/1`, `insert/2`, `insert_new/2`, `last/1`, `last_iter/1`, `lookup/2`, `lookup_element/3`, `member/2`, `next/2`, `next_iter/2`, `prev/2`, `prev_iter/2`, `notify/4`, `first/2`, `first_iter/2`, `last/2`, `last_iter/2`, `next/3`, `next_iter/3`, `prev/3`, `prev_iter/3`.
 
 <a name="types"></a>
 

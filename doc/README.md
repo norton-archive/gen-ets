@@ -240,36 +240,87 @@ OK, passed 500 tests
 
 100.0% {1,attempts}
 
-7.10% {delete,ok}
-7.01% {new,ok}
-3.76% {select_count,ok}
-3.65% {select,ok}
-3.57% {match_object,ok}
-3.56% {match31,ok}
-3.54% {select_reverse31,ok}
-3.54% {insert,ok}
-3.54% {select_reverse,ok}
-3.52% {last,ok}
-3.47% {match_delete,ok}
-3.46% {tab2list,ok}
-3.46% {lookup,ok}
-3.45% {foldl,ok}
-3.44% {insert_new,ok}
-3.43% {member,ok}
-3.41% {match,ok}
-3.40% {match_object31,ok}
-3.35% {foldr,ok}
-3.34% {first,ok}
-3.33% {all,ok}
-3.32% {select_delete,ok}
-3.30% {delete_all_objects,ok}
-3.28% {select31,ok}
-2.40% {lookup_element,{error,badarg}}
-2.09% {next,ok}
-1.90% {prev,ok}
-1.38% {next,{error,badarg}}
-1.36% {prev,{error,badarg}}
-0.66% {lookup_element,ok}
+3.81% {insert_new,2,ok}
+3.60% {match_object,2,ok}
+3.57% {select,2,ok}
+3.57% {foldl,3,ok}
+3.55% {foldr,3,ok}
+3.53% {lookup,2,ok}
+3.52% {select_count,2,ok}
+3.52% {all,1,ok}
+3.52% {match_delete,2,ok}
+3.51% {select31,3,ok}
+3.50% {delete,1,ok}
+3.45% {match31,3,ok}
+3.44% {member,2,ok}
+3.43% {insert,2,ok}
+3.39% {new,3,ok}
+3.39% {match_object31,3,ok}
+3.39% {match,2,ok}
+3.35% {select_reverse,2,ok}
+3.35% {tab2list,1,ok}
+3.34% {select_delete,2,ok}
+3.34% {new,2,ok}
+3.33% {delete_all_objects,1,ok}
+3.27% {delete,2,ok}
+3.25% {select_reverse31,3,ok}
+3.24% {last,1,ok}
+3.23% {first,1,ok}
+2.95% {lookup_element,3,{error,badarg}}
+2.35% {prev,2,ok}
+1.98% {next,2,ok}
+1.40% {prev,2,{error,badarg}}
+1.26% {next,2,{error,badarg}}
+0.68% {lookup_element,3,ok}
+true</code></pre>
+
+<p><em>OR</em> if PropEr is available then follow this recipe:</p>
+
+
+<pre><code>$ mkdir working-directory-name
+$ cd working-directory-name
+$ git clone https://github.com/norton/gen-ets.git gen_ets
+$ cd gen_ets
+$ make deps clean compile-for-proper
+$ (cd .qc; erl -smp +A 5 -pz ../deps/qc/ebin)
+
+1> qc_statem_gen_ets:qc_run(500).
+  :
+  :
+OK: Passed 500 test(s).
+
+8% {new,2,ok}
+3% {all,1,ok}
+3% {select31,3,ok}
+3% {match_object31,3,ok}
+3% {first,1,ok}
+3% {match_delete,2,ok}
+3% {select_count,2,ok}
+3% {delete,1,ok}
+3% {foldr,3,ok}
+3% {select_reverse31,3,ok}
+3% {match_object,2,ok}
+3% {foldl,3,ok}
+3% {select_delete,2,ok}
+3% {select,2,ok}
+3% {insert_new,2,ok}
+3% {delete,2,ok}
+3% {insert,2,ok}
+3% {delete_all_objects,1,ok}
+3% {new,3,ok}
+3% {lookup,2,ok}
+3% {match,2,ok}
+3% {member,2,ok}
+3% {match31,3,ok}
+3% {select_reverse,2,ok}
+3% {tab2list,1,ok}
+2% {last,1,ok}
+2% {lookup_element,3,{error,badarg}}
+2% {next,2,ok}
+1% {prev,2,ok}
+1% {next,2,{error,badarg}}
+1% {prev,2,{error,badarg}}
+0% {lookup_element,3,ok}
 true</code></pre>
 
 
