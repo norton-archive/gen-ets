@@ -1,7 +1,7 @@
 %% -*- Doc -*-
 %% vim: set syntax=asciidoc:
 @author Joseph Wayne Norton <norton@alum.mit.edu>
-@copyright 2011-2014 by Joseph Wayne Norton
+@copyright 2011-2016 by Joseph Wayne Norton
 @title GEN_ETS - GEN(eric) Erlang Term Storage
 @doc
 GEN_ETS is an generic wrapper for Erlang Term Storage with a callback
