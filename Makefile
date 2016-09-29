@@ -41,4 +41,4 @@ compile-for-eqc:
 	$(REBAR) -D QC -D QC_EQC compile eqc compile_only=true
 
 compile-for-proper:
-	$(REBAR) -D QC -D QC_PROPER compile eqc compile_only=true
+	$(REBAR) -D QC -D QC_PROPER compile qc compile_only=true
